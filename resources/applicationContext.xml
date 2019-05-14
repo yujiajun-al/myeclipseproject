@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 引入properties文件 -->
+	 <context:property-placeholder location="classpath:database.properties"/>
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+    	destroy-method="close">
+    	<property name="driverClassName" value="${jdbc.driver}"/>
+    	<property name="url" value="${jdbc.url}"/>
+    	<property name="username" value="${jdbc.username}"/>
+    	<property name="password" value="${jdbc.password}"/>
+    </bean>
+    
+    <!-- 通过JNDI配置DataSource -->
+	<!--   <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+    	通过jndiName指定引用JNDI的数据源名称
+    	<property name="jndiName">
+    		<value>java:comp/env/a</value>
+    	</property>
+    </bean> -->
+    
+    <!-- 配置SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<!-- 引用数据源组件 -->
+    	<property name="dataSource" ref="dataSource"/>
+    	<!-- 引用MyBatis配置文件中的配置 -->
+    	<property name="configLocation" value="classpath:configuration.xml"/>
+    	<!-- 配置SQL映射文件信息 -->
+    	<property name="mapperLocations">
+    		<list>
+    			<value>classpath:cn/yjj/dao/**/*.xml</value>
+    		</list>
+    	</property>
+    </bean>
+    <!-- 配置DAO -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<property name="basePackage" value="cn.yjj.dao"/>
+    </bean>
+    <!-- 配置扫描注解定义的业务Bean -->
+   <context:component-scan base-package="cn.yjj.service"></context:component-scan>
+</beans>

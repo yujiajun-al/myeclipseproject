@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yjj.dao.teacher.TeacherMapper">
+	<select id="selectTeacherList" resultMap="Tea" parameterType="Teacher">
+		SELECT id,name, gender, natives, birthday, nation, politics, discipline, education, titles, duty, phone, photograph, rests, Personal_profile_id, continue_educationid, 
+			education_competitionid, guide_students_teachersid, public_classid, research_testid, teaching_subjectsid FROM teacher 
+			<where>
+				<if test="name!=null and name!=''">
+					and name like CONCAT ('%',#{name},'%')
+				</if>
+				<if test="gender!=null and gender!=''">
+					and gender=#{gender}
+				</if>
+				<if test="politics!=null and politics!=''">
+					and politics=#{politics}
+				</if>
+				<if test="education!=null and education!=''">
+					and education=#{education}
+				</if>
+			</where>
+	</select>
+	<resultMap type="Teacher" id="Tea">
+		<id column="id" property="id"/>
+	</resultMap>
+	
+	
+	<select id="selectTeacher" resultMap="st2">
+		SELECT t.*,pp.id as pp_id,pp.starting_time,pp.termination_years,pp.department,pp.any_position,pp.note,
+	ce.id,ce.time,ce.certificate,ce.content_grades,ce.organizer,ec.certificate,ec.id,ec.organizational_units,
+	ec.race_name,ec.time,ec.which,gst.certificate,gst.gain_success,gst.id,gst.name,gst.study_guides,gst.time,
+	pc.classes,pc.id,pc.name,pc.proof_materials,pc.time,rt.certificate,rt.id,rt.qrganizational_unit,rt.time,
+	rt.working_capacity,ts.certificate,ts.concluding_situation,ts.course_name,ts.id,ts.project_department,
+	ts.time,ts.undertake_task,th.id as th_id,th.honor,mgp.id as mgp_id,mgp.name,mgp.time,mgp.my_educational_philosophy,
+	mgp.self_analysis,mgp.my_growth_plan,pgp.id as pgp_id,pgp.name,pgp.planning_time,pgp.growth_plan,pgp.self_testId,
+	pgp.Conclusion_reflections as pgp_Conclusion_reflections,puc.id as puc_id,puc.time,puc.name,puc.classes,puc.proof_materials,
+	rtd.id as ret_id,rtd.time,rtd.working_capacity,rtd.qrganizational_unit,rtd.certificate,ecn.id as ecn_id,ecn.time,ecn.race_name,
+	ecn.which,ecn.organizational_units,ecn.certificate,tss.id as tss_id,tss.time,tss.course_name,tss.project_department,
+	tss.undertake_task,tss.concluding_situation,tss.certificate,pw.id as pw_id,pw.time,pw.title_dissertation,pw.own_part,
+	pw.winning,pw.certificate,gsts.id as gsts_id,gsts.time,gsts.name,gsts.study_guides,gsts.gain_success,gsts.certificate,
+	ced.id as ced_id,ced.time,ced.content_grades,ced.organizer,ced.certificate,fos.id as fos_id,fos.name
+	
+	FROM teacher t,personal_profile pp,continue_education ce,education_competition ec,guide_students_teachers gst,
+	public_class pc,research_test rt,teaching_subjects ts,title_honor th,master_growth_plan mgp,
+	phased_growth_planning pgp,public_class puc,research_test rtd,education_competition ecn,
+	teaching_subjects tss,paper_works pw,guide_students_teachers gsts,continue_education ced,formal_schooling fos
+	WHERE t.Personal_profile_id=pp.id AND t.continue_educationid=ce.id AND t.education_competitionid=ec.id
+	AND t.guide_students_teachersid=gst.id AND t.public_classid=pc.id AND t.research_testid=rt.id AND 
+	t.teaching_subjectsid=ts.id AND t.title_honorId=th.id and t.master_growth_planid=mgp.id and
+	public_classid=puc.id and research_testid=rtd.id and t.education_competitionid=ecn.id and t.teaching_subjectsid=tss.id
+	and t.guide_students_teachersid=gsts.id and t.continue_educationid=ced.id and t.phased_growth_planningid=pgp.id
+	and t.paper_worksid=pw.id and t.education=fos.id
+	and
+			t.id=#{id}
+	</select>
+	
+	<resultMap type="Teacher" id="st2">
+		<id property="id" column="id"/>
+		<collection property="planList" ofType="Plan" >
+			<id property="id" column="mgp_id"/>
+		</collection>
+		
+		<collection property="thList" ofType="Title_honor" >
+			<id property="id" column="th_id"/>
+			<result column="th.honor" property="honor"/>
+		</collection>
+		
+		<collection property="pucList" ofType="Public_class" >
+			<id property="id" column="puc_id"/>
+		</collection>
+		
+		<collection property="retList" ofType="Research_test" >
+			<id property="id" column="ret_id"/>
+		</collection>
+		
+		<collection property="edcList" ofType="Education_competition" >
+			<id property="id" column="ecn_id"/>
+		</collection>
+		
+		<collection property="tssList" ofType="Teaching_subjects" >
+			<id property="id" column="tss_id"/>
+		</collection>
+		
+		<collection property="pwList" ofType="Paper_works" >
+			<id property="id" column="pw_id"/>
+		</collection>
+		
+		<collection property="teachersList" ofType="Teachers" >
+			<id property="id" column="gsts_id"/>
+		</collection>
+		
+		<collection property="fosList" ofType="Formal_schooling" >
+			<id property="id" column="fos_id"/>
+		</collection>
+		
+		<collection property="cedList" ofType="Continue_education" >
+			<id property="id" column="ced_id"/>
+		</collection>
+		
+		<collection property="ppList" ofType="Personal_profile" >
+			<id property="id" column="pp_id"/>
+		</collection>
+		
+		<collection property="planningList" ofType="Planning" >
+			<id property="id" column="pgp_id"/>
+			<result column="pgp_Conclusion_reflections" property="Conclusion_reflections"/>
+		</collection>
+	</resultMap>
+	
+	<update id="updateTeacher" parameterType="Teacher">
+		update teacher
+		<set>
+			<if test="name!=null and name!=''">name=#{name},</if>
+			<if test="gender!=null and gender!=''">gender=#{gender},</if>
+			<if test="natives!=null and natives!=''">natives=#{natives},</if>
+			<if test="birthday!=null and birthday!=''">birthday=#{birthday},</if>
+			<if test="nation!=null and nation!=''">nation=#{nation},</if>
+			<if test="politics!=null and politics!=''">politics=#{politics},</if>
+			<if test="discipline!=null and discipline!=''">discipline=#{discipline},</if>
+			<if test="education!=null and education!=''">education=#{education},</if>
+			<if test="titles!=null and titles!=''">titles=#{titles},</if>
+			<if test="duty!=null and duty!=''">duty=#{duty},</if>
+			<if test="phone!=null and phone!=''">phone=#{phone},</if>
+			<if test="photograph!=null and photograph!=''">photograph=#{photograph},</if>
+			<if test="rests!=null and rests!=''">rests=#{rests},</if>
+			<if test="Personal_profile_id!=null and Personal_profile_id!=''">Personal_profile_id=#{Personal_profile_id},</if>
+			<if test="title_honorId!=null and title_honorId!=''">title_honorId=#{title_honorId},</if>
+			<if test="continue_educationid!=null and continue_educationid!=''">continue_educationid=#{continue_educationid},</if>
+			<if test="education_competitionid!=null and education_competitionid!=''">education_competitionid=#{education_competitionid},</if>
+			<if test="guide_students_teachersid!=null and guide_students_teachersid!=''">guide_students_teachersid=#{guide_students_teachersid},</if>
+			<if test="public_classid!=null and public_classid!=''">public_classid=#{public_classid},</if>
+			<if test="research_testid!=null and research_testid!=''">research_testid=#{research_testid},</if>
+			<if test="teaching_subjectsid!=null and teaching_subjectsid!=''">teaching_subjectsid=#{teaching_subjectsid},</if>
+			<if test="master_growth_planid!=null and master_growth_planid!=''">master_growth_planid=#{master_growth_planid},</if>
+			<if test="phased_growth_planningid!=null and phased_growth_planningid!=''">phased_growth_planningid=#{phased_growth_planningid},</if>
+			<if test="paper_worksid!=null and paper_worksid!=''">paper_worksid=#{paper_worksid},</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

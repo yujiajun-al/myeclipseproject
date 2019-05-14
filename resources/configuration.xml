@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration  
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 引入database.properties文件 -->
+	<!-- <properties resource="database.properties" /> -->
+	<!-- 配置mybatis的log实现LOG4J -->
+	<settings>
+		<setting name="logImpl" value="LOG4J" />
+		<!-- 设置resultMap的自动映射级别为NONE(禁止自动匹配) -->
+		 <setting name="autoMappingBehavior" value="FULL"/>
+	</settings>
+	<!-- 这里给实体类取别名，方便在mapper配置文件中调用 -->
+	<typeAliases>
+		<package name="cn.yjj.pojo"/>
+	</typeAliases>
+</configuration>
