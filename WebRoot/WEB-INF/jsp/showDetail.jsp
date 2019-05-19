@@ -938,12 +938,13 @@
                   </div>
                   <div class="x_content">
 
-                    <form action="${pageContext.request.contextPath }/Login/modify" class="form-horizontal form-label-left" novalidate id="form1" method="post">
+                    <form class="form-horizontal form-label-left" novalidate id="form1">
 
                       <p>Personal information of teachers
                       </p>
                       <span class="section">Personal Info</span>
-
+						<input type="hidden" id="id" name="id" value="${teacher.id }"/>
+					
                       <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">姓名 <span class="required">*</span>
                         </label>
@@ -969,7 +970,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="education">最高学历 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select name="education" class="form-control col-md-7 col-xs-12">
+                          <select id="education" name="education" class="form-control col-md-7 col-xs-12">
                           		<c:forEach items="${fsList }" var="fs">
                           		<option value="${fs.id }">${fs.name }</option>
                           		</c:forEach>
@@ -995,7 +996,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telephone">联系电话 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="tel" id="telephone" name="phone" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12" value="${teacher.phone }">
+                          <input type="tel" id="phone" name="phone" required="required" data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12" value="${teacher.phone }">
                         </div>
                       </div>
                       <div class="item form-group">
@@ -1010,14 +1011,14 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">其他情况 <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <textarea id="textarea" required="required" name="rests" class="form-control col-md-7 col-xs-12" ></textarea>
+                          <textarea id="rests" required="required" name="rests" class="form-control col-md-7 col-xs-12" ></textarea>
                         </div>
                       </div>
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-md-offset-3">
                           <button type="submit" class="btn btn-primary" id="cancel">Cancel</button>
-                          <button id="send2" type="submit" class="btn btn-success">Submit</button>
+                          <button id="send2" type="button" class="btn btn-success">Submit</button>
                         </div>
                       </div>
                     </form>
@@ -1377,29 +1378,6 @@
 						}
 					});
 				});
-		
-				$("#send2").bind("click", function() {
-					var teacher=$("form1").serialize();
-					alert(teacher);
-					$.ajax({
-						url : "${pageContext.request.contextPath }/Login/modify",
-						type : "post",
-						dataType : "json",
-						data:teacher,
-						success : function(data) {
-							if (data.num == "0") {
-								alert("修改成功！");
-								location.href = "${pageContext.request.contextPath }/Login/index";
-							}else{
-								alert("修改失败！");
-							}
-						},
-						error : function(data) {
-							alert("0");
-							alert(data);
-						}
-					});
-				});		
 			});
 		</script>
 		
@@ -1428,6 +1406,41 @@
 				
 				$("#cancel").bind("click",function(){
 					$("#row2").attr("style", "display:none;");
+				});
+				
+				$("#send2").bind("click",function(){
+					alert("dfds");
+					var teacher={
+						id:$("#id").val(),
+						name:$("#name").val(),
+						politics:$("#politics").val(),
+						discipline:$("#discipline").val(),
+						education:$("#education").val(),
+						titles:$("#titles").val(),
+						duty:$("#duty").val(),
+						phone:$("#phone").val(),
+						natives:$("#natives").val(),
+						rests:$("#rests").val()
+					}
+					$.ajax({
+						url : "${pageContext.request.contextPath }/Login/modify",
+							type : "post",
+							dataType : "json",
+							data:teacher,
+							success : function(data) {
+								if (data.num == "0") {
+									alert("修改成功！");
+									location.href = "${pageContext.request.contextPath }/Login/index";
+								}else{
+									alert("修改失败！");
+								}
+							},
+							error : function(data) {
+								alert("0");
+								alert(data);
+							}
+					
+					});
 				});
 		</script>
 </body>

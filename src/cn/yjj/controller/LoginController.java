@@ -31,6 +31,7 @@ import cn.yjj.pojo.Formal_schooling;
 import cn.yjj.pojo.Teacher;
 import cn.yjj.service.fs.Formal_schoolingService;
 import cn.yjj.service.teacher.TeacherService;
+import cn.yjj.util.PageSupport;
 
 @Controller
 @RequestMapping("/Login")
@@ -41,12 +42,33 @@ public class LoginController {
 	private Formal_schoolingService formal_schoolingService;
 	
 	@RequestMapping(value="/index")
-	public String index(String name,String gender,String politics,String education,Model model){
-		List<Teacher> teacherList=teacherService.selectTeacherList(name, gender, politics, education);
+	public String index(String name,String gender,String politics,String education,String id,String pageIndex,Model model){
+		int currentPageNo=1;
+		int pageSize=7;
+		if(pageIndex!=null){
+			currentPageNo=Integer.valueOf(pageIndex);
+		}
+		int currentPageNo2 = (currentPageNo-1)*pageSize;
+		
+		List<Teacher> teacherList=teacherService.selectTeacherList(name, gender, politics, education,currentPageNo2, pageSize);
 		List<Formal_schooling> fsList=formal_schoolingService.selectFormal_schoolingList();
+		Integer totalCount=teacherService.selectTeacherCount();
+		PageSupport ps=new PageSupport();
+		ps.setCurrentPageNo(currentPageNo);
+		ps.setPageSize(pageSize);
+		ps.setTotalCount(totalCount);
+		int totalPageCount=ps.getTotalPageCount();
+		if(currentPageNo<1){
+			currentPageNo=1;
+		}else if(currentPageNo>totalPageCount){
+			currentPageNo=totalPageCount;
+		}
 		model.addAttribute("education",education);
 		model.addAttribute("teacherList", teacherList);
 		model.addAttribute("fsList", fsList);
+		model.addAttribute("currentPageNo", currentPageNo);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("totalPageCount",totalPageCount);
 		return "index";
 	}
 	
@@ -70,5 +92,18 @@ public class LoginController {
 			modifyMap.put("num", "1");
 		}
 		return JSONArray.toJSONString(modifyMap);
+	}
+	
+	@RequestMapping(value="/delete",method=RequestMethod.POST)
+	@ResponseBody
+	public String delete(String id){
+		Map<String,String> deleteMap=new HashMap<String, String>();
+		int num=teacherService.deleteTeacher(id);
+		if(num>0){
+			deleteMap.put("num", "0");
+		}else{
+			deleteMap.put("num", "1");
+		}
+		return JSONArray.toJSONString(deleteMap);
 	}
 }

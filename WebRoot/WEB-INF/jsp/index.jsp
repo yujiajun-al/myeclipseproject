@@ -19,6 +19,7 @@
 <!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+	
 <!--  Bootstrap -->
 <link
 	href="${pageContext.request.contextPath }/statics/vendors/bootstrap/dist/css/bootstrap.min.css"
@@ -83,15 +84,15 @@
 										<li><a href="index2.html">Dashboard2</a></li>
 										<li><a href="index3.html">Dashboard3</a></li>
 									</ul></li>
-								<li><a><i class="fa fa-edit"></i> Forms <span
+								<li><a><i class="fa fa-edit"></i> AISHi <span
 										class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="form.html">General Form</a></li>
-										<li><a href="form_advanced.html">Advanced Components</a></li>
-										<li><a href="form_validation.html">Form Validation</a></li>
-										<li><a href="form_wizards.html">Form Wizard</a></li>
-										<li><a href="form_upload.html">Form Upload</a></li>
-										<li><a href="form_buttons.html">Form Buttons</a></li>
+										<li><a href="aishi.html">General aishi</a></li>
+										<li><a href="aishi_advanced.html">Advanced Components</a></li>
+										<li><a href="aishi_validation.html">aishi Validation</a></li>
+										<li><a href="aishi_wizards.html">aishi Wizard</a></li>
+										<li><a href="aishi_upload.html">aishi Upload</a></li>
+										<li><a href="aishi_buttons.html">aishi Buttons</a></li>
 									</ul></li>
 								<li><a><i class="fa fa-desktop"></i> UI Elements <span
 										class="fa fa-chevron-down"></span></a>
@@ -270,7 +271,8 @@
 					<div class="">
 						<div class="page-title">
 							<div class="as">
-								<form action="${pageContext.request.contextPath }/Login/index" method="post">
+								<form id="frm1" action="${pageContext.request.contextPath }/Login/index" >
+									
 									<table>
 										<tr>
 											<th>名称:<input type="text" name="name" /></th>
@@ -287,9 +289,11 @@
 													</c:forEach>
 											</select>
 											</th>
+											
+											<th><input type="hidden" name="pageIndex" value="1" /></th>
+											
 											<th>政治面貌:<input type="text" name="politics" /></th>
-											<div>         </div>
-											<th><input type="submit" id="submit" value="查询"></th>
+											<th><input type="submit" value="查询"></th>
 										</tr>
 									</table>
 								</form>
@@ -344,12 +348,14 @@
 										<div class="x_content">
 
 											<p>
-												Add class
-												<code>bulk_action</code>
-												to table for bulk actions options on row select
+												A detailed list of all teacher information
 											</p>
 
 											<div class="table-responsive">
+												
+												      <div id="del" class="fa-hover col-md-3 col-sm-4 col-xs-12"><a href="#/trash"><i class="fa fa-trash">删除</i></a>
+                      									  </div>
+												
 												<table class="table table-striped jambo_table bulk_action">
 													<thead>
 														<tr class="headings">
@@ -375,7 +381,7 @@
 														<c:forEach items="${teacherList }" var="tl">
 															<tr class="even pointer">
 																<td class="a-center "><input type="checkbox"
-																	class="flat" name="table_records"></td>
+																	id="inp" class="flat" name="table_records" value="${tl.id }"></td>
 																<td class="id">${tl.id }</td>
 																<td class=" ">${tl.name }</td>
 																<td class=" ">${tl.gender=="0"?"女":"男" }</i></td>
@@ -385,67 +391,7 @@
 																<td class=" last" id="last"><a href="${pageContext.request.contextPath }/Login/showDetail/${tl.id}">View</a></td>
 															</tr>
 														</c:forEach>
-														<tr class="even pointer">
-															<td class="a-center "><input type="checkbox"
-																class="flat" name="table_records"></td>
-															<td class=" ">121000040</td>
-															<td class=" ">May 23</td>
-															<td class=" ">121000210 <i
-																class="success fa fa-long-arrow-up"></i></td>
-															<td class=" ">John Blank L</td>
-															<td class=" ">Paid</td>
-															<td class="a-right a-right ">$7.45</td>
-															<td class=" last"><a href="#">View</a></td>
-														</tr>
-														<tr class="odd pointer">
-															<td class="a-center "><input type="checkbox"
-																class="flat" name="table_records"></td>
-															<td class=" ">121000039</td>
-															<td class=" ">May 23, 2014 11:30:12 PM</td>
-															<td class=" ">121000208 <i
-																class="success fa fa-long-arrow-up"></i>
-															</td>
-															<td class=" ">John Blank L</td>
-															<td class=" ">Paid</td>
-															<td class="a-right a-right ">$741.20</td>
-															<td class=" last"><a href="#">View</a></td>
-														</tr>
-														<tr class="even pointer">
-															<td class="a-center "><input type="checkbox"
-																class="flat" name="table_records"></td>
-															<td class=" ">121000038</td>
-															<td class=" ">May 24, 2014 10:55:33 PM</td>
-															<td class=" ">121000203 <i
-																class="success fa fa-long-arrow-up"></i>
-															</td>
-															<td class=" ">Mike Smith</td>
-															<td class=" ">Paid</td>
-															<td class="a-right a-right ">$432.26</td>
-															<td class=" last"><a href="#">View</a></td>
-														</tr>
-														<tr class="odd pointer">
-															<td class="a-center "><input type="checkbox"
-																class="flat" name="table_records"></td>
-															<td class=" ">121000037</td>
-															<td class=" ">May 24, 2014 10:52:44 PM</td>
-															<td class=" ">121000204</td>
-															<td class=" ">Mike Smith</td>
-															<td class=" ">Paid</td>
-															<td class="a-right a-right ">$333.21</td>
-															<td class=" last"><a href="#">View</a></td>
-														</tr>
-														<tr class="even pointer">
-															<td class="a-center "><input type="checkbox"
-																class="flat" name="table_records"></td>
-															<td class=" ">121000040</td>
-															<td class=" ">May 24, 2014 11:47:56 PM</td>
-															<td class=" ">121000210</td>
-															<td class=" ">John Blank L</td>
-															<td class=" ">Paid</td>
-															<td class="a-right a-right ">$7.45</td>
-															<td class=" last"><a href="#">View</a></td>
-														</tr>
-
+														
 													</tbody>
 												</table>
 											</div>
@@ -772,10 +718,19 @@
 									</div>
 								</div>
 							</div>
+							
 						</div>
+						   <input type="hidden" id="totalPageCount" value="${totalPageCount}"/>
+    <c:import url="rollpage.jsp">
+		<c:param name="totalCount" value="${totalCount}" />
+		<c:param name="currentPageNo" value="${currentPageNo}" />
+		<c:param name="totalPageCount" value="${totalPageCount}" />
+	</c:import>
 					</div>
+					
 				</div>
 			</div>
+			
 		</div>
 	</div>
 	<!-- /page content2 -->
@@ -789,6 +744,9 @@
 	<div class="clearfix"></div>
 	</footer>
 	<!-- /footer content -->
+
+	<script type="text/javascript" src="${pageContext.request.contextPath }/statics/js/jquery-1.12.4.js"></script>
+
 
 	<!-- jQuery -->
 	<script
@@ -954,6 +912,29 @@
 			$(".title_left").bind("click",function(){
 				$(".as").attr("style","display:block;");
 				$(".aw").attr("style","display:none;");
+			});
+			
+			$("#del").bind("click", function() {
+				var id=$("#inp").val();
+				alert(id);
+				$.ajax({
+					url : "${pageContext.request.contextPath }/Login/delete",
+					type : "post",
+					dataType : "json",
+					data:{id:id},
+					success : function(data) {
+						if (data.num == "0") {
+							alert("删除成功！");
+							location.href = "${pageContext.request.contextPath }/Login/index";
+						}else{
+							alert("删除失败!");
+						}
+					},
+					error : function(data) {
+						alert("0");
+						alert(data);
+					}
+				});
 			});
 		});
 	</script>

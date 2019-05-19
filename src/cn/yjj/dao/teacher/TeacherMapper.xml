@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.yjj.dao.teacher.TeacherMapper">
-	<select id="selectTeacherList" resultMap="Tea" parameterType="Teacher">
+ 	<select id="selectTeacherList" resultMap="Tea" parameterType="Teacher">
 		SELECT id,name, gender, natives, birthday, nation, politics, discipline, education, titles, duty, phone, photograph, rests, Personal_profile_id, continue_educationid, 
 			education_competitionid, guide_students_teachersid, public_classid, research_testid, teaching_subjectsid FROM teacher 
 			<where>
@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					and education=#{education}
 				</if>
 			</where>
+			limit #{currentPageNo},#{pageSize}
 	</select>
 	<resultMap type="Teacher" id="Tea">
 		<id column="id" property="id"/>
@@ -138,4 +139,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where id=#{id}
 	</update>
+	
+	<select id="selectTeacherCount" resultType="Integer">
+		select count(1) from teacher where 1=1
+	</select>
+	
+	<delete id="deleteTeacher" parameterType="Integer">
+		delete from teacher where id=#{id}
+	</delete>
 </mapper>

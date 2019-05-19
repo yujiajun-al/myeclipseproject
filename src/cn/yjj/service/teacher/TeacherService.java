@@ -14,7 +14,9 @@ public interface TeacherService {
 	public List<Teacher> selectTeacherList(@Param("name")String name,
 										@Param("gender")String gender,
 										@Param("politics")String politics,
-										@Param("education")String education);
+										@Param("education")String education,
+										@Param("currentPageNo")int currentPageNo,
+										@Param("pageSize")int pageSize);
 	
 	/**
 	 * 根据id查询教师信息
@@ -27,4 +29,12 @@ public interface TeacherService {
 	 * 修改教师信息
 	 */
 	public int updateTeacher(Teacher teacher);
+	/**
+	 * 查询教师总数
+	 */
+	public Integer selectTeacherCount();
+	/**
+	 * 按id删除
+	 */
+	public Integer deleteTeacher(String id);
 }
